@@ -1,0 +1,46 @@
+<html>
+<body><h1>
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class SegwiseLogin {
+    public static void main(String[] args) {
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+
+        try {
+            String URL = "https://segwise.ai/login";
+            String USERNAME = "qa@segwise.ai";
+            String PASSWORD = "segwise_test";
+            String METRIC_XPATH = "//div[contains(text(),'Cost Per Conversion')]";
+
+            driver.get(URL);
+            driver.manage().window().maximize();
+
+            WebElement usernameField = driver.findElement(By.name("email"));
+            usernameField.sendKeys(USERNAME);
+
+            WebElement passwordField = driver.findElement(By.name("password"));
+            passwordField.sendKeys(PASSWORD);
+  WebElement loginButton = driver.findElement(By.cssSelector("button[type='submit']"));
+            loginButton.click();
+
+            Thread.sleep(5000);
+
+            WebElement metric = driver.findElement(By.xpath(METRIC_XPATH));
+            if (metric.isDisplayed()) {
+                System.out.println("Dashboard metric 'Cost Per Conversion' is visible!");
+            } else {
+                System.out.println("Metric not visible on dashboard!");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            driver.quit();
+        }
+    }
+}
